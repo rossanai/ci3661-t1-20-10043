@@ -1,8 +1,8 @@
 -- =====================================================================
 --  CI-3661 — Tarea 1 (Haskell) — Septiembre–Diciembre 2026
 --
---  Nombre:
---  Carnet:
+--  Nombre: Rossana Ilardo
+--  Carnet: 20-10043
 --
 --  Declaración de uso de herramientas de IA (obligatoria, ver enunciado):
 --
@@ -33,8 +33,22 @@ import Data.Char (isAlphaNum, isDigit, toLower, digitToInt)
 -- =====================================================================
 
 -- A1
+-- Quita lo que no sea letra o dígito y pasa todo a minúscula
+limpiar :: String -> String
+limpiar [] = []
+limpiar (c:cs)
+  | isAlphaNum c = toLower c : limpiar cs
+  | otherwise    = limpiar cs
+
+  -- Le da la vuelta a una lista
+invertir :: [a] -> [a]
+invertir [] = []
+invertir (x:xs) = invertir xs ++ [x]
+
 esPalindromo :: String -> Bool
-esPalindromo = undefined
+esPalindromo texto = limpio == invertir limpio
+  where
+    limpio = limpiar texto
 
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
