@@ -132,11 +132,25 @@ promedioSobreUmbral umbral xs = resultado (foldl paso (0, 0) xs)
       | otherwise   = Just (suma / cuenta)
 
 -- B2
-movimientosCaballo :: (Int, Int) -> [(Int, Int)]
-movimientosCaballo = undefined
+-- Los desplazamientos de un caballo son df, dc con |df|=/=|dc|y los dos en [-2, -1, 1, 2]. Como df se recorre de menor a mayor 
+-- y dentro de cada df, dc también, las casillas ya salen ordenadas
 
+movimientosCaballo :: (Int, Int) -> [(Int, Int)]
+movimientosCaballo (f, c) =
+  [ (f + df, c + dc) | df <- [-2, -1, 1, 2], dc <- [-2, -1, 1, 2]
+                     , abs df /= abs dc
+                     , dentro (f + df), dentro (c + dc) ]
+
+-- Indica si una coordenada está entre 1 y 8
+dentro :: Int -> Bool
+dentro n = n >= 1 && n <= 8
+
+-- Casillas alcanzables en dos saltos, sin repetidos
 enDosSaltos :: (Int, Int) -> Int
-enDosSaltos = undefined
+enDosSaltos p = length (foldr agregar [] dosSaltos)
+  where
+    dosSaltos = [ r | q <- movimientosCaballo p, r <- movimientosCaballo q ]
+    agregar x acc = if x `elem` acc then acc else x : acc
 
 -- B3
 miMap :: (a -> b) -> [a] -> [b]
