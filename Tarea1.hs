@@ -5,6 +5,10 @@
 --  Carnet: 20-10043
 --
 --  Declaración de uso de herramientas de IA (obligatoria, ver enunciado):
+-- Use la herramienta Gemini Plus, principalmente para entender conceptos de las primeras clases a las que 
+-- no pude asistir. Me confundíeron temas como la currificación (aplicación parcial), y la diferencia entre foldr y foldl.
+-- Me ayudo a resolver problemas con la instalación de GHCup y varios descuidos con el entorno, entender por qué GHCi mostraba 
+-- las tildes como \225, la sintaxis de ghc -Wall y las advertencias de LF/CRLF en Git. 
 --
 -- =====================================================================
 --  No cambies el nombre del módulo ni la lista de exportación, ni las
@@ -153,11 +157,14 @@ enDosSaltos p = length (foldr agregar [] dosSaltos)
     agregar x acc = if x `elem` acc then acc else x : acc
 
 -- B3
+-- Igual que largo = foldr de la clase 3, pero en lugar de contar, coloco f x delante del resto
 miMap :: (a -> b) -> [a] -> [b]
-miMap = undefined
+miMap f = foldr (\x acc -> f x : acc) []
 
+-- Coloco x delante del resto si cumple el predicado
 miFilter :: (a -> Bool) -> [a] -> [a]
-miFilter = undefined
+miFilter p = foldr (\x acc -> if p x then x : acc else acc) []
 
+-- aplica f al acumulador y le pasa el resultado al resto 
 miFoldl :: (b -> a -> b) -> b -> [a] -> b
-miFoldl = undefined
+miFoldl f z xs = foldr (\x g acc -> g (f acc x)) id xs z
