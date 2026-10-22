@@ -79,10 +79,38 @@ elmenor a b
 
 -- A3
 leerHora :: String -> Either String (Int, Int)
-leerHora = undefined
+leerHora [a, b, ':', c, d]
+  | todosdigitos a b c d = validar (juntar a b) (juntar c d)
+  | otherwise            = Left "formato inválido"
+leerHora _ = Left "formato inválido"
+
+-- Indica si los cuatro son dígitos
+todosdigitos :: Char -> Char -> Char -> Char -> Bool
+todosdigitos a b c d = isDigit a && isDigit b && isDigit c && isDigit d
+
+-- Convierte dos dígitos en un número
+juntar :: Char -> Char -> Int
+juntar x y = 10 * digitToInt x + digitToInt y
+
+-- Revisa los rangos, hora y minutos
+validar :: Int -> Int -> Either String (Int, Int)
+validar h m
+  | h > 23    = Left "hora fuera de rango"
+  | m > 59    = Left "minutos fuera de rango"
+  | otherwise = Right (h, m)
 
 duracion :: String -> String -> Either String Int
-duracion = undefined
+duracion s1 s2 = case leerHora s1 of
+  Left e -> Left e
+  Right (h1, m1) -> case leerHora s2 of
+    Left e -> Left e
+    Right (h2, m2) -> Right (minutosEntre (h1 * 60 + m1) (h2 * 60 + m2))
+
+-- Minutos entre dos momentos del día, pasando a mañana si el final es anterior
+minutosEntre :: Int -> Int -> Int
+minutosEntre ini fin
+  | fin >= ini = fin - ini
+  | otherwise  = fin - ini + 1440
 
 -- =====================================================================
 -- Parte B: orden superior.
