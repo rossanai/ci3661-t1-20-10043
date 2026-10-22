@@ -1,0 +1,42 @@
+Problema 7 traza
+carnet 20-10043, d = [0,0,4,3]
+
+(a) foldr (-) 0 [0,0,4,3]
+= 0 - foldr (-) 0 [0,4,3]                    
+= 0 - (0 - foldr (-) 0 [4,3])                
+= 0 - (0 - (4 - foldr (-) 0 [3]))            
+= 0 - (0 - (4 - (3 - foldr (-) 0 [])))       
+= 0 - (0 - (4 - (3 - 0)))                    
+= 0 - (0 - (4 - 3))                          
+= 0 - (0 - 1)                                
+= 0 - (-1)                                   
+= 1                                          
+
+(b) foldl (-) 0 [0,0,4,3]
+= foldl (-) (0 - 0) [0,4,3]                  
+= foldl (-) ((0 - 0) - 0) [4,3]              
+= foldl (-) (((0 - 0) - 0) - 4) [3]          
+= foldl (-) ((((0 - 0) - 0) - 4) - 3) []     
+= (((0 - 0) - 0) - 4) - 3                    
+= ((0 - 0) - 4) - 3                          
+= (0 - 4) - 3                                
+= (-4) - 3                                   
+= -7                                         
+
+(c) miFoldl f z xs = foldr (\x g acc -> g (f acc x)) id xs z
+    escribo L = \x g acc -> g ((-) acc x), que es la lambda con f = (-)
+
+miFoldl (-) 0 [0,0]
+= foldr L id [0,0] 0                         
+= L 0 (foldr L id [0]) 0                     
+= L 0 (L 0 (foldr L id [])) 0                
+= L 0 (L 0 id) 0                             
+= (L 0 id) ((-) 0 0)                         
+= (L 0 id) 0                                 
+= id ((-) 0 0)                               
+= id 0                                       
+= 0                                          
+
+(d) a da 1 y b da -7 porque foldr agrupa los paréntesis hacia la derecha y foldl hacia la izquierda, y la resta no es asociativa
+cambiar la agrupación cambiaria el resultado. Aquí 0 - (0 - (4 - (3 - 0))) = 1,
+mientras que (((0 - 0) - 0) - 4) - 3 = -7.
