@@ -48,16 +48,34 @@ invertir (x:xs) = invertir xs ++ [x]
 esPalindromo :: String -> Bool
 esPalindromo texto = comparar (limpiar texto)
 
--- Dice si una cadena es igual a su inversa
+-- Indica si una cadena es igual a su inversa
 comparar :: String -> Bool
 comparar s = s == invertir s
 
 -- A2
--- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
--- lista una sola vez:
---
+-- Va avanzando por la lista y a la vez lleva anotados el mayor y el menor que ve. Cada uno se compara una vez
+-- con esos dos valores y luego se pasa al siguiente
+
 mayorYMenor :: Ord a => [a] -> Maybe (a, a)
-mayorYMenor = undefined
+mayorYMenor [] = Nothing
+mayorYMenor (x:xs) = Just (recorre x x xs)
+
+-- Lleva el mayor y el menor vistos hasta ahora mientras avanza por la lista
+recorre :: Ord a => a -> a -> [a] -> (a, a)
+recorre mayor menor [] = (mayor, menor)
+recorre mayor menor (y:ys) = recorre (elmayor mayor y) (elmenor menor y) ys
+
+-- De dos valores, devuelve el más grande
+elmayor :: Ord a => a -> a -> a
+elmayor a b
+  | b > a     = b
+  | otherwise = a
+
+-- De dos valores, devuelve el más pequeño
+elmenor :: Ord a => a -> a -> a
+elmenor a b
+  | b < a     = b
+  | otherwise = a
 
 -- A3
 leerHora :: String -> Either String (Int, Int)
