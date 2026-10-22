@@ -120,7 +120,16 @@ minutosEntre ini fin
 
 -- B1
 promedioSobreUmbral :: Double -> [Double] -> Maybe Double
-promedioSobreUmbral = undefined
+promedioSobreUmbral umbral xs = resultado (foldl paso (0, 0) xs)
+  where
+    -- El acumulador es (suma, cuenta) solo cambia si el elemento es estrictamente mayor que el umbral
+    paso (suma, cuenta) x
+      | x > umbral = (suma + x, cuenta + 1)
+      | otherwise  = (suma, cuenta)
+    -- Si no se contó ningún elemento no hay promedio, si no, suma / cuenta
+    resultado (suma, cuenta)
+      | cuenta == 0 = Nothing
+      | otherwise   = Just (suma / cuenta)
 
 -- B2
 movimientosCaballo :: (Int, Int) -> [(Int, Int)]
