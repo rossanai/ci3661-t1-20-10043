@@ -46,9 +46,11 @@ invertir [] = []
 invertir (x:xs) = invertir xs ++ [x]
 
 esPalindromo :: String -> Bool
-esPalindromo texto = limpio == invertir limpio
-  where
-    limpio = limpiar texto
+esPalindromo texto = comparar (limpiar texto)
+
+-- Dice si una cadena es igual a su inversa
+comparar :: String -> Bool
+comparar s = s == invertir s
 
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
